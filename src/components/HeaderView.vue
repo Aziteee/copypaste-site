@@ -87,8 +87,7 @@ function openUploadBox() {
   </el-header>
   <el-drawer v-model="drawerShow" :with-header="false" size="80%">
     <search-bar />
-    <history-table @cell-clicked="() => { drawerShow = false }" max-height="calc(100% - 50px)" class="mobile-table"
-                   line-clamp="1" />
+    <history-table @cell-clicked="() => { drawerShow = false }" max-height="calc(100% - 50px)" class="mobile-table" line-clamp="1" />
   </el-drawer>
 </template>
 
@@ -114,7 +113,7 @@ function openUploadBox() {
 
     .menu-section {
       .search-box {
-        width: 25vw;
+        width: 20vw;
         min-width: 230px;
         max-width: 500px;
       }
