@@ -20,14 +20,14 @@ const pp = ref(10)
 const pagerCount = computed(() => isMobileSize.value ? 4 : 7) // 移动端最多显示4个页码
 const layout = computed(() => `prev,pager,next${isMobileSize.value ? '' : ',jumper'}`) // 移动端不显示跳转页面
 
-const page = ref<number>(Number(route.query.page) || 1)
+const page = ref<number>(Number(route.query.pn) || 1)
 watch(page, (value) => {
   const { ...query } = route.query
-  router.replace({ query: { ...query, page: value.toString() } })
+  router.replace({ query: { ...query, pn: value.toString() } })
 })
 
 onBeforeRouteUpdate((to) => {
-  page.value = Number(to.query.page) || 1
+  page.value = Number(to.query.pn) || 1
   fetchData(to.query)
 })
 
