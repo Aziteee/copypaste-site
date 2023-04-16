@@ -4,7 +4,7 @@ import { IAPIQueryParams, IArticle } from '@/types'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import ArticleTable from '@components/ArticleTable.vue'
 import { useMobileSize } from '@composables/mobileSize'
-import api from '@/api'
+import * as api from '@/api'
 
 const route = useRoute()
 const router = useRouter()

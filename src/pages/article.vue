@@ -5,8 +5,15 @@ import { useHistoryStore } from '@stores/history'
 import { DocumentCopy, User, Clock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { IArticle } from '@/types'
-import api from '@/api'
+import * as api from '@/api'
 import Like from '@icons/Like.vue'
+import { debounce } from 'lodash'
+
+enum isLikedStatus {
+  LIKED,
+  UNLIKED,
+  UNKNOWN
+}
 
 const route = useRoute()
 
@@ -14,7 +21,7 @@ const historyStore = useHistoryStore()
 
 const loading = ref(true)
 const data = reactive<IArticle>({ id: route.params.id as string, text: '', uploadTime: '', likes: 0, uploader: '' })
-const isLiked = ref(false)
+const isLiked = ref(isLikedStatus.UNKNOWN)
 
 onBeforeRouteUpdate((to) => {
   data.id = to.params.id as string
@@ -22,7 +29,11 @@ onBeforeRouteUpdate((to) => {
 })
 
 api.isLiked(data.id).then(() => {
-  isLiked.value = true
+  isLiked.value = isLikedStatus.LIKED
+}).catch(error => {
+  if (error.response.status === 404) {
+    isLiked.value = isLikedStatus.UNLIKED
+  }
 })
 
 function fetchData() {
@@ -46,25 +57,31 @@ function fetchData() {
 }
 fetchData()
 
-function like() {
+const like = debounce(() => {
   api.likeArticle(data.id)
     .then(response => {
       if (response.status === 204) {
         data.likes++
-        isLiked.value = true
+        isLiked.value = isLikedStatus.LIKED
       }
     })
-}
+}, 300, {
+  leading: true,
+  trailing: false
+})
 
-function unlike() {
+const unlike = debounce(() => {
   api.unlikeArticle(data.id)
     .then(response => {
       if (response.status === 204) {
         data.likes--
-        isLiked.value = false
+        isLiked.value = isLikedStatus.UNLIKED
       }
     })
-}
+}, 300, {
+  leading: true,
+  trailing: false
+})
 
 function copy() {
   const textElement = document.querySelector('.article-text')
@@ -114,8 +131,8 @@ function copy() {
       <el-text size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
     </el-card>
     <div class="button-group">
-      <el-button v-if="!isLiked" :icon="Like" title="点赞" @click="like">{{ data.likes || '点赞' }}</el-button>
-      <el-button v-else :icon="Like" title="取消点赞" @click="unlike" type="primary" plain>{{ data.likes }}</el-button>
+      <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" title="取消点赞" @click="unlike" type="primary" plain>{{ data.likes }}</el-button>
+      <el-button v-else :disabled="isLiked === isLikedStatus.UNKNOWN" :icon="Like" title="点赞" @click="like">{{ data.likes || '点赞' }}</el-button>
       <el-button :icon="DocumentCopy" @click="copy">复制</el-button>
     </div>
   </article>

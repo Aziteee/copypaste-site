@@ -5,7 +5,7 @@ import SearchBar from '@components/SearchBar.vue'
 import HistoryTable from '@components/HistoryTable.vue'
 import { ref, h } from 'vue'
 import { ElMessageBox, ElMessage, ElInput } from 'element-plus'
-import api from '@/api'
+import * as api from '@/api'
 
 const router = useRouter()
 

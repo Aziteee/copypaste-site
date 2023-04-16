@@ -3,14 +3,18 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { ArticleSortDirection, ArticleSortType } from '@/types'
+import { debounce } from 'lodash'
 
 const router = useRouter()
 
 const inputText = ref('')
 
-function search() {
+const search = debounce(() => {
   router.push({ name: 'search', query: { kw: inputText.value, sort: ArticleSortType.TIME, direction: ArticleSortDirection.DESC } })
-}
+}, 300, {
+  leading: true,
+  trailing: false
+})
 </script>
 
 <template>
