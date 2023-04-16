@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@pages/disclaimer.vue')
   },
   {
+    name: 'random',
+    path: '/random',
+    component: () => import('@pages/random.vue')
+  },
+  {
     name: '404',
     path: '/:pathMatch(.*)*',
     component: () => import('@pages/404.vue')
