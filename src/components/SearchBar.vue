@@ -10,7 +10,7 @@ const router = useRouter()
 const inputText = ref('')
 
 const search = debounce(() => {
-  router.push({ name: 'search', query: { kw: inputText.value, sort: ArticleSortType.TIME, direction: ArticleSortDirection.DESC } })
+  router.push({ name: 'search', query: { q: inputText.value, sort: ArticleSortType.TIME, direction: ArticleSortDirection.DESC } })
 }, 300, {
   leading: true,
   trailing: false

@@ -1,21 +1,16 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { useHistoryStore } from '@stores/history'
 import { DocumentCopy, User, Clock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { IArticle } from '@/types'
+import { type IArticle, isLikedStatus } from '@/types'
 import * as api from '@/api'
 import Like from '@icons/Like.vue'
 import { debounce } from 'lodash'
 
-enum isLikedStatus {
-  LIKED,
-  UNLIKED,
-  UNKNOWN
-}
-
 const route = useRoute()
+const router = useRouter()
 
 const historyStore = useHistoryStore()
 
@@ -96,6 +91,13 @@ function copy() {
     selection.removeAllRanges()
   }
 }
+
+const queryUploader = debounce(() => {
+  router.push({ name: 'search', query: { q: `uploader:${data.uploader}` } })
+}, 300, {
+  leading: true,
+  trailing: false
+})
 </script>
 
 <template>
@@ -113,7 +115,7 @@ function copy() {
                 <span>上传者</span>
               </div>
             </template>
-            {{ data.uploader }}
+            <el-link :underline="false" @click="queryUploader">{{ data.uploader }}</el-link>
           </el-descriptions-item>
           <el-descriptions-item label="上传时间">
             <template #label>

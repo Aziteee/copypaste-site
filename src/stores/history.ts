@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { watch, reactive } from 'vue'
-import { IHistory } from '@/types'
+import { type IHistory } from '@/types'
 
 export const useHistoryStore = defineStore('history', () => {
   const history = reactive<IHistory[]>([])

@@ -22,7 +22,7 @@ export enum ArticleSortDirection {
 export type IQueryIndex = 'genshin' | 'diana' | 'taffy' | 'dxl'
 
 export type IAPIQueryParams = Partial<{
-  kw: string,
+  q: string,
   pp: number,
   pn: number,
   sort: ArticleSortType,
@@ -32,4 +32,10 @@ export type IAPIQueryParams = Partial<{
 export interface IAPIUploadParams {
   text: string,
   uploader: string
+}
+
+export enum isLikedStatus {
+  LIKED,
+  UNLIKED,
+  UNKNOWN
 }

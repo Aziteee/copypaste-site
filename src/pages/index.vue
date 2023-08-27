@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Refresh } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
-import { IArticle } from '@/types'
+import { type IArticle } from '@/types'
 import { useRouter } from 'vue-router'
 import * as api from '@/api'
 import Like from '@icons/Like.vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IArticle } from '@/types'
+import { type IArticle } from '@/types'
 import ArticleCard from '@components/ArticleCard.vue'
 
 const props = defineProps<{
