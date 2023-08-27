@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Clock, Menu, Upload } from '@element-plus/icons-vue'
+import { Clock, Upload } from '@element-plus/icons-vue'
+import Menu from '@/assets/icons/Menu.vue'
 import { useRouter } from 'vue-router'
 import SearchBar from '@components/SearchBar.vue'
 import HistoryTable from '@components/HistoryTable.vue'
@@ -82,7 +83,9 @@ function openUploadBox() {
         </el-popover>
         <el-button :icon="Upload" :circle="true" @click="openUploadBox" />
       </el-space>
-      <el-button :icon="Menu" @click="() => { drawerShow = true }" class="mobile" />
+      <el-icon size="24" @click="() => { drawerShow = true }" class="mobile">
+        <Menu />
+      </el-icon>
     </div>
   </el-header>
   <el-drawer v-model="drawerShow" :with-header="false" size="80%">

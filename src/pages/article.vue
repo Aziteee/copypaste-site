@@ -110,7 +110,7 @@ const queryUploader = debounce(() => {
             <template #label>
               <div class="cell-item">
                 <el-icon style="margin-right: 6px;">
-                  <user />
+                  <User />
                 </el-icon>
                 <span>上传者</span>
               </div>
@@ -121,7 +121,7 @@ const queryUploader = debounce(() => {
             <template #label>
               <div class="cell-item">
                 <el-icon style="margin-right: 6px;">
-                  <clock />
+                  <Clock />
                 </el-icon>
                 <span>上传时间</span>
               </div>

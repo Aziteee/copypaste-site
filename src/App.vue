@@ -11,7 +11,7 @@ import HeaderView from '@components/HeaderView.vue'
     <el-footer class="footer">
       <el-link href="//tieba.baidu.com/f?kw=%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4" target="_blank">数据来源: 百度贴吧 - 复制粘贴吧</el-link>
       <el-divider direction="vertical" />
-      <el-link href="/disclaimer">免责声明</el-link>
+      <el-link href="/disclaimer">公告</el-link>
     </el-footer>
   </el-container>
 </template>

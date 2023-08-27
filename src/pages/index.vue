@@ -6,6 +6,8 @@ import { useRouter } from 'vue-router'
 import * as api from '@/api'
 import Like from '@icons/Like.vue'
 import { debounce } from 'lodash'
+import Windmill from '@/assets/icons/Windmill.vue'
+import Ranking from '@/assets/icons/Ranking.vue'
 
 const router = useRouter()
 
@@ -43,7 +45,12 @@ fetchLikesRanking()
     <el-card shadow="never" class="box-card">
       <template #header>
         <div class="card-header">
-          <span>随机一言</span>
+          <div style="display: flex; align-items: center;">
+            <el-icon style="margin-right: 7px;">
+              <Windmill />
+            </el-icon>
+            <span>随机一言</span>
+          </div>
           <el-button :icon="Refresh" @click="fetchYiyan">换一换</el-button>
         </div>
       </template>
@@ -59,7 +66,10 @@ fetchLikesRanking()
     </el-card>
     <el-card shadow="never" class="box-card">
       <template #header>
-        <div>
+        <div style="display: flex; align-items: center;">
+          <el-icon size="23" style="margin-right: 7px;">
+            <Ranking />
+          </el-icon>
           <span>排行榜</span>
         </div>
       </template>
@@ -75,7 +85,7 @@ fetchLikesRanking()
             <template #default="scope">
               <div style="display: flex; align-items: center">
                 <el-icon>
-                  <like />
+                  <Like />
                 </el-icon>
                 <span style="margin-left: 10px">{{ scope.row.likes }}</span>
               </div>

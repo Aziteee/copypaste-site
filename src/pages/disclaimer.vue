@@ -1,4 +1,13 @@
 <template>
+  <el-text tag="h1" size="large">更新说明</el-text>
+  <br>
+  <el-text>
+    2023-8-27更新：<br>
+    1.支持查看某个上传者上传的所有语句<br>
+    2.网站采用了gzip压缩，打开速度预计比之前快20%<br>
+  </el-text>
+  <br>
+  <br>
   <el-text tag="h1" size="large">免责声明</el-text>
   <br>
   <el-text>
