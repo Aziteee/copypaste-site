@@ -12,3 +12,8 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: $line-clamp; // 最大溢出行数
 }
+
+@mixin setSize($size) {
+  height: $size;
+  width: $size;
+}

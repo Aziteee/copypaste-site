@@ -5,8 +5,9 @@ import { useRouter } from 'vue-router'
 import SearchBar from '@components/SearchBar.vue'
 import HistoryTable from '@components/HistoryTable.vue'
 import { ref, h } from 'vue'
-import { ElMessageBox, ElMessage, ElInput } from 'element-plus'
+import { ElMessageBox, ElMessage, ElInput, ElText } from 'element-plus'
 import * as api from '@/api'
+import Icon from '@/assets/icons/icon.png'
 
 const router = useRouter()
 
@@ -18,6 +19,10 @@ function openUploadBox() {
   ElMessageBox({
     title: '上传语句',
     message: () => h('div', null, [
+      h(ElText, {
+        size: 'small',
+        innerHTML: 'Tips: 请勿上传无意义或违规内容'
+      }),
       h(ElInput, {
         placeholder: '请输入上传者',
         maxlength: 12,
@@ -25,7 +30,8 @@ function openUploadBox() {
         modelValue: inputUploader.value,
         'onUpdate:modelValue': (val: string) => {
           inputUploader.value = val
-        }
+        },
+        style: 'margin-top:15px'
       }),
       h(ElInput, {
         type: 'textarea',
@@ -72,7 +78,10 @@ function openUploadBox() {
 <template>
   <el-header class="container">
     <div class="header-section">
-      <el-text @click="() => { router.replace({ path: '/' }) }" class="title">复制粘贴语录</el-text>
+      <div style="display: flex; align-items: center; cursor: pointer;" @click="() => { router.replace({ path: '/' }) }">
+        <img :src="Icon" style="height: 30px; width: 30px;" />
+        <el-text style="margin-left: 5px; font-size: medium; font-weight: 600;">复制粘贴语录</el-text>
+      </div>
       <el-space size="large" class="menu-section desktop">
         <search-bar class="search-box" />
         <el-popover trigger="click" width="206px">
@@ -107,12 +116,6 @@ function openUploadBox() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .title {
-      font-size: large;
-      font-weight: 600;
-      cursor: pointer;
-    }
 
     .menu-section {
       .search-box {
