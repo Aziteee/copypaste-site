@@ -115,7 +115,7 @@ const queryUploader = debounce(() => {
                 <span>上传者</span>
               </div>
             </template>
-            <el-link :underline="false" @click="queryUploader">{{ data.uploader }}</el-link>
+            <el-link :underline="false" style="margin-top: -2px;" @click="queryUploader">{{ data.uploader }}</el-link>
           </el-descriptions-item>
           <el-descriptions-item label="上传时间">
             <template #label>

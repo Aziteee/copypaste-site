@@ -17,3 +17,14 @@
   height: $size;
   width: $size;
 }
+
+// 利用投影给图片着色 (父容器必须设置overflow:hidden, 否则会出现两个图)
+@mixin img-dye($color, $offset: 150px, $important: false) {
+  @if $important {
+      filter: drop-shadow(-$offset 0 $color) !important;
+  } @else {
+      filter: drop-shadow(-$offset 0 $color);
+  }
+
+  transform: translate($offset);
+}

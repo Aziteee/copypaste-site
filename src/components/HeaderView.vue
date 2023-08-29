@@ -7,7 +7,7 @@ import HistoryTable from '@components/HistoryTable.vue'
 import { ref, h } from 'vue'
 import { ElMessageBox, ElMessage, ElInput, ElText } from 'element-plus'
 import * as api from '@/api'
-import Icon from '@/assets/icons/icon.png'
+import Logo from '@/assets/icons/logo.png'
 
 const router = useRouter()
 
@@ -78,19 +78,19 @@ function openUploadBox() {
 <template>
   <el-header class="container">
     <div class="header-section">
-      <div style="display: flex; align-items: center; cursor: pointer;" @click="() => { router.replace({ path: '/' }) }">
-        <img :src="Icon" style="height: 30px; width: 30px;" />
-        <el-text style="margin-left: 5px; font-size: medium; font-weight: 600;">复制粘贴语录</el-text>
+      <div style="display: flex; align-items: center; cursor: pointer; overflow: hidden;" @click="() => { router.replace({ path: '/' }) }">
+        <img :src="Logo" class="logo-img"/>
+        <!-- <el-text style="margin-left: 5px; font-size: medium; font-weight: 600;">复制粘贴语录</el-text> -->
       </div>
       <el-space size="large" class="menu-section desktop">
-        <search-bar class="search-box" />
+        <SearchBar class="search-box" />
         <el-popover trigger="click" width="206px">
           <template #reference>
-            <el-button :icon="Clock" :circle="true" />
+            <el-button title="历史记录" :icon="Clock" :circle="true" />
           </template>
-          <history-table max-height="300px" line-clamp="2" />
+          <HistoryTable max-height="300px" line-clamp="2" />
         </el-popover>
-        <el-button :icon="Upload" :circle="true" @click="openUploadBox" />
+        <el-button title="上传语句" :icon="Upload" :circle="true" @click="openUploadBox" />
       </el-space>
       <el-icon size="24" @click="() => { drawerShow = true }" class="mobile">
         <Menu />
@@ -98,8 +98,8 @@ function openUploadBox() {
     </div>
   </el-header>
   <el-drawer v-model="drawerShow" :with-header="false" size="80%">
-    <search-bar />
-    <history-table @cell-clicked="() => { drawerShow = false }" max-height="calc(100% - 50px)" class="mobile-table" line-clamp="1" />
+    <SearchBar />
+    <HistoryTable @cell-clicked="() => { drawerShow = false }" max-height="calc(100% - 50px)" class="mobile-table" line-clamp="1" />
   </el-drawer>
 </template>
 
@@ -116,6 +116,11 @@ function openUploadBox() {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    .logo-img {
+      @include img-dye(var(--el-text-color-primary));
+      height: 40px;
+    }
 
     .menu-section {
       .search-box {

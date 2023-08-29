@@ -28,9 +28,9 @@ function handleCellClick(row: IArticle) {
       <template #header>
         <div style="display: flex; justify-content: space-between;">
           <span>历史记录</span>
-          <el-popconfirm v-if="historyStore.history.length > 0" title="确认删除？" @confirm="historyStore.clear">
+          <el-popconfirm v-if="historyStore.history.length > 0" title="确认清除？" @confirm="historyStore.clear">
             <template #reference>
-              <el-button :underline="false" :icon="Delete" link style="font-size: small;"></el-button>
+              <el-button title="清除记录" :underline="false" :icon="Delete" link style="font-size: small;"></el-button>
             </template>
           </el-popconfirm>
         </div>

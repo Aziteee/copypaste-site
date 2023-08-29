@@ -5,6 +5,7 @@
     <el-text>
       2023-8-29更新：<br>
       1.新增搜索语句，可使用uploader、likes、uploaderTime命令进行精确搜索。比如在搜索框搜索“uploader:Azite likes:>0 uploadTime:>=2023-8-26”就是查询上传者Azite的点赞数大于0且上传时间在26号之后的语句<br>
+      2.网站logo改版<br>
       <br>
       2023-8-27更新：<br>
       1.支持查看某个上传者上传的所有语句<br>

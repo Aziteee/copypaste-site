@@ -31,7 +31,7 @@ function addFilter(text: string) {
     <template #append>
       <el-popover :width="100" trigger="click">
         <template #reference>
-          <el-button :icon="Filter"></el-button>
+          <el-button title="搜索语句" :icon="Filter"></el-button>
         </template>
         <div class="filter-popover-list">
           <el-button text @click="() => addFilter('uploader')">上传者</el-button>
@@ -43,7 +43,7 @@ function addFilter(text: string) {
   </el-input>
 </template>
 
-<style>
+<style scoped lang="scss">
 .el-popover {
   min-width: 10px !important;
 }
