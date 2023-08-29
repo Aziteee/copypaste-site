@@ -25,7 +25,7 @@ import HeaderView from '@components/HeaderView.vue'
 @import '@style/mixins.scss';
 
 $header-height: 60px;
-$footer-height: 70px;
+$footer-height: 75px;
 
 .header {
   height: $header-height;

@@ -23,12 +23,16 @@ function handleCellClick(row: IArticle) {
 
 <template>
   <el-table :data="historyStore.history" table-layout="fixed" @cell-click="handleCellClick" cell-class-name="history-cell"
-    class="table">
+            class="table">
     <el-table-column prop="text" label="历史记录">
       <template #header>
         <div style="display: flex; justify-content: space-between;">
           <span>历史记录</span>
-          <el-button v-if="historyStore.history.length > 0" :underline="false" :icon="Delete" link style="font-size: small;" @click="historyStore.clear"></el-button>
+          <el-popconfirm v-if="historyStore.history.length > 0" title="确认删除？" @confirm="historyStore.clear">
+            <template #reference>
+              <el-button :underline="false" :icon="Delete" link style="font-size: small;"></el-button>
+            </template>
+          </el-popconfirm>
         </div>
       </template>
     </el-table-column>

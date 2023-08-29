@@ -119,7 +119,7 @@ function openUploadBox() {
 
     .menu-section {
       .search-box {
-        width: 20vw;
+        width: 25vw;
         min-width: 230px;
         max-width: 500px;
       }
