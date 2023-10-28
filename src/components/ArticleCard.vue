@@ -1,20 +1,29 @@
 <script setup lang="ts">
+import TextTemplate from './TextTemplate.vue'
+
 interface IArticle {
-  id: string,
-  text: string,
-  time: string
+  id: string
+  text: string
+  time?: string
+  showMoreButton?: boolean
+  lineClamp?: number
 }
 
-const props = defineProps<IArticle>()
+const props = withDefaults(defineProps<IArticle>(), {
+  lineClamp: 10,
+  showMoreButton: true
+})
 </script>
 
 <template>
   <el-card shadow="hover" class="card">
-    <el-text :title="props.text" class="text-section">{{ props.text }}</el-text>
+    <el-text class="text-section">
+      <TextTemplate :text="props.text"></TextTemplate>
+    </el-text>
     <el-divider v-if="props.time" />
-    <div class="info-section">
+    <div v-if="!props.time && props.showMoreButton === false" class="info-section">
       <el-text v-if="props.time" size="small" title="收录日期">{{ props.time }}</el-text>
-      <el-link>查看全文 »</el-link>
+      <el-link v-if="props.showMoreButton" >查看全文 »</el-link>
     </div>
   </el-card>
 </template>

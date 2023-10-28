@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { type IArticle } from '@/types'
+import { IArticle } from '@/types'
 import ArticleCard from '@components/ArticleCard.vue'
 
 const props = defineProps<{
-  data: IArticle[]
+  data: IArticle[],
+  title?: string
 }>()
 </script>
 
 <template>
   <section class="container">
-    <article-card v-for="item in props.data" :key="item.text" :text="item.text" :time="item.uploadTime || ''"
-      @click="$emit('article-selected', item.id)" class="card" :id="item.id" />
+    <h2 v-if="props.title" class="title">{{ props.title }}</h2>
+    <div class="cards">
+      <article-card v-for="item in props.data" :key="item.text" :text="item.text"
+        @click="$emit('article-selected', item.id)" class="card" :id="item.id" :show-more-button="false" />
+    </div>
   </section>
 </template>
 
@@ -25,6 +29,8 @@ const props = defineProps<{
   -moz-column-gap: 40px;
   -webkit-column-gap: 40px;
   column-gap: 40px;
+  display: flex;
+  flex-direction: column;
 
   @media screen {
     @media (max-width: 1200px) {

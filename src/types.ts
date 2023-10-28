@@ -29,6 +29,12 @@ export type IAPIQueryParams = Partial<{
   direction: ArticleSortDirection
 }>
 
+export interface IAPISearchParams {
+  q?: string,
+  pp?: number,
+  pn?: number
+}
+
 export interface IAPIUploadParams {
   text: string,
   uploader: string

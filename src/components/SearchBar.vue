@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search, Filter } from '@element-plus/icons-vue'
 import { ArticleSortDirection, ArticleSortType } from '@/types'
@@ -10,8 +10,11 @@ const router = useRouter()
 const inputText = ref('')
 const searchInput = ref<HTMLInputElement | null>(null)
 
+const defaultPP = inject<number>('default_pp')
+
 const search = debounce(() => {
-  router.push({ name: 'search', query: { q: inputText.value, sort: ArticleSortType.TIME, direction: ArticleSortDirection.DESC } })
+  // router.push({ name: 'search', query: { q: inputText.value, sort: ArticleSortType.TIME, direction: ArticleSortDirection.DESC } })
+  router.push({ name: 'search', query: { q: inputText.value, pp: defaultPP, pn: 1 } })
 }, 300, {
   leading: true,
   trailing: false
@@ -26,7 +29,7 @@ function addFilter(text: string) {
 <template>
   <el-input v-model="inputText" placeholder="搜索..." @keyup.enter="search" ref="searchInput" class="search-input">
     <template #prepend>
-      <el-button :icon="Search" @click="search" />
+      <el-button title="搜索" :icon="Search" @click="search" />
     </template>
     <template #append>
       <el-popover :width="100" trigger="click">
@@ -43,14 +46,14 @@ function addFilter(text: string) {
   </el-input>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .el-popover {
   min-width: 10px !important;
 }
 
-.search-input .el-input-group__prepend {
-  background-color: var(--el-fill-color-blank);
-}
+// .search-input .el-input-group__prepend {
+//    background-color: var(--el-fill-color-blank);
+//  }
 
 .filter-popover-list {
   display: flex;

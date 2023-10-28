@@ -1,4 +1,4 @@
-import { type IAPIQueryParams, type IAPIUploadParams, ArticleSortType, ArticleSortDirection } from "@/types"
+import { type IAPIQueryParams, type IAPIUploadParams, ArticleSortType, ArticleSortDirection, IAPISearchParams } from "@/types"
 import requests from "./request"
 
 export function getRandomArticle() {
@@ -31,4 +31,8 @@ export function unlikeArticle(id: string) {
 
 export function uploadArticle(body: IAPIUploadParams) {
   return requests.post('/articles', body)
+}
+
+export function searchArticles(body: IAPISearchParams) {
+  return requests.post('/articles/search', body)
 }

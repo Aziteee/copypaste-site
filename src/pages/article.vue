@@ -101,10 +101,10 @@ const queryUploader = debounce(() => {
 </script>
 
 <template>
-  <el-skeleton v-if="loading" :rows="5" animated />
-  <article v-if="!loading" class="content">
+  <article class="content">
     <el-card shadow="never" class="content-card">
-      <template #header>
+      <el-skeleton v-if="loading" :rows="4" animated />
+      <template v-if="!loading" #header>
         <el-descriptions :column="2" class="article-description">
           <el-descriptions-item>
             <template #label>
@@ -130,7 +130,7 @@ const queryUploader = debounce(() => {
           </el-descriptions-item>
         </el-descriptions>
       </template>
-      <el-text size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
+      <el-text v-if="!loading" size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
     </el-card>
     <div class="button-group">
       <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" title="取消点赞" @click="unlike" type="primary" plain>{{ data.likes }}</el-button>

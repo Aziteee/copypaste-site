@@ -14,15 +14,14 @@ const router = useRouter()
 const drawerShow = ref(false)
 
 function openUploadBox() {
-  const inputUploader = ref('')
+  const inputUploader = ref(localStorage.getItem('uploader') ?? '')
   const inputText = ref('')
   ElMessageBox({
     title: '上传语句',
     message: () => h('div', null, [
       h(ElText, {
-        size: 'small',
-        innerHTML: 'Tips: 请勿上传无意义或违规内容'
-      }),
+        size: 'small'
+      }, 'Tips: 请勿上传无意义或违规内容'),
       h(ElInput, {
         placeholder: '请输入上传者',
         maxlength: 12,
@@ -61,6 +60,7 @@ function openUploadBox() {
           .then((response) => {
             done()
             ElMessage.success('上传成功')
+            localStorage.setItem('uploader', inputUploader.value)
             router.push({ name: 'article', params: { id: response.data.id } })
           })
           .catch((_error) => {
@@ -78,9 +78,8 @@ function openUploadBox() {
 <template>
   <el-header class="container">
     <div class="header-section">
-      <div style="display: flex; align-items: center; cursor: pointer; overflow: hidden;" @click="() => { router.replace({ path: '/' }) }">
+      <div title="首页" style="display: flex; align-items: center; cursor: pointer; overflow: hidden;" @click="() => { router.replace({ path: '/' }) }">
         <img :src="Logo" class="logo-img"/>
-        <!-- <el-text style="margin-left: 5px; font-size: medium; font-weight: 600;">复制粘贴语录</el-text> -->
       </div>
       <el-space size="large" class="menu-section desktop">
         <SearchBar class="search-box" />
