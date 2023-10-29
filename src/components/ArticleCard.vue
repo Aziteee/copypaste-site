@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<IArticle>(), {
 </script>
 
 <template>
-  <el-card shadow="hover" class="card">
+  <el-card shadow="always" class="card">
     <el-text class="text-section">
       <TextTemplate :text="props.text"></TextTemplate>
     </el-text>
@@ -30,6 +30,10 @@ const props = withDefaults(defineProps<IArticle>(), {
 
 <style scoped lang="scss">
 @import '@style/mixins.scss';
+
+.card:hover {
+  border-color: var(--el-color-primary);
+}
 
 .info-section {
   display: flex;

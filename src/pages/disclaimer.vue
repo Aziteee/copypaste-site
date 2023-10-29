@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import { useTitle } from '@vueuse/core'
+
+const siteTitle = useTitle()
+siteTitle.value = '公告 | 复制粘贴语录'
+</script>
+
 <template>
   <div class="content">
     <el-card class="box-card">
@@ -7,7 +14,10 @@
         </div>
       </template>
       <el-text>
-        网站界面重写中...有什么想法或者有bug可以都在github提issue
+        网站界面大更新！<br>
+        UI风格采用了我最爱的简洁风，卡片式设计，大圆角搭配阴影。并且化繁为简，删除不必要的条条框框，使风格更加统一简洁。颜色采用了富有高级感的黑色。<br>
+        <br>
+        我个人对这个设计还是很满意的，哈哈。
       </el-text>
     </el-card>
     <el-card class="box-card">
@@ -17,6 +27,9 @@
         </div>
       </template>
       <el-text>
+        2023-10-28更新：<br>
+        1.UI升级<br>
+        <br>
         2023-10-27更新：<br>
         1.搜索功能升级<br>
         2.搜索界面更新<br>
@@ -48,11 +61,12 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span style="font-weight: bold;">联系我</span>
+          <span style="font-weight: bold;">关于</span>
         </div>
       </template>
       <el-text>
-        站长邮箱：mail@azite.cn
+        我的博客：<el-link href="https://blog.azite.cn">blog.azite.cn</el-link><br/>
+        我的邮箱：1350855271@qq.com
       </el-text>
     </el-card>
   </div>

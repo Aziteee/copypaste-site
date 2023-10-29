@@ -46,15 +46,11 @@ provide('default_pp', 10)
 <style scoped lang="scss">
 @import '@style/mixins.scss';
 
-$header-height: 60px;
-$footer-height: 75px;
-
-.header {
-  height: $header-height;
-}
+$header-height: 80px;
+$footer-height: 100px;
 
 .main {
-  background-color: #f4f4f4;
+  // background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,8 +64,8 @@ $footer-height: 75px;
   gap: 5px;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid var(--el-border-color);
-  margin-bottom: 0px;
+  // border-top: 1px solid var(--el-border-color);
+  // margin-bottom: 0px;
   height: $footer-height;
 }
 </style>

@@ -76,22 +76,22 @@ function openUploadBox() {
 </script>
 
 <template>
-  <el-header class="container">
+  <el-header height="80px" class="container">
     <div class="header-section">
       <div title="首页" style="display: flex; align-items: center; cursor: pointer; overflow: hidden;" @click="() => { router.replace({ path: '/' }) }">
         <img :src="Logo" class="logo-img"/>
       </div>
       <el-space size="large" class="menu-section desktop">
         <SearchBar class="search-box" />
-        <el-popover trigger="click" width="206px">
+        <!-- <el-popover trigger="click" width="206px">
           <template #reference>
             <el-button title="历史记录" :icon="Clock" :circle="true" />
           </template>
           <HistoryTable max-height="300px" line-clamp="2" />
-        </el-popover>
-        <el-button title="上传语句" :icon="Upload" :circle="true" @click="openUploadBox" />
+        </el-popover> -->
+        <el-button :icon="Upload" type="primary" :round="true" @click="openUploadBox">上传</el-button>
       </el-space>
-      <el-icon size="24" @click="() => { drawerShow = true }" class="mobile">
+      <el-icon size="24" @click="() => { drawerShow = true }" class="mobile" style="margin-right: 15px;">
         <Menu />
       </el-icon>
     </div>
@@ -106,8 +106,13 @@ function openUploadBox() {
 @import '@style/mixins.scss';
 @import '@style/constants.scss';
 
+// .header-section {
+//   margin-left: 30px;
+// }
+
 .container {
-  border-bottom: 1px solid var(--el-border-color);
+  // border-bottom: 1px solid var(--el-border-color);
+  // box-shadow: var(--el-box-shadow-light);
 
   .header-section {
     @include overspread;
@@ -119,9 +124,11 @@ function openUploadBox() {
     .logo-img {
       @include img-dye(var(--el-text-color-primary));
       height: 40px;
+      margin-left: 10px;
     }
 
     .menu-section {
+      margin-right: 10px;
       .search-box {
         width: 25vw;
         min-width: 230px;

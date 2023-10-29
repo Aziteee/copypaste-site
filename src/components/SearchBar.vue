@@ -27,11 +27,11 @@ function addFilter(text: string) {
 </script>
 
 <template>
-  <el-input v-model="inputText" placeholder="搜索..." @keyup.enter="search" ref="searchInput" class="search-input">
-    <template #prepend>
+  <el-input v-model="inputText" placeholder="搜索..." :prefix-icon="Search" @keyup.enter="search" ref="searchInput" class="search-input">
+    <!-- <template #prepend>
       <el-button title="搜索" :icon="Search" @click="search" />
-    </template>
-    <template #append>
+    </template> -->
+    <!-- <template #append>
       <el-popover :width="100" trigger="click">
         <template #reference>
           <el-button title="搜索语句" :icon="Filter"></el-button>
@@ -42,7 +42,7 @@ function addFilter(text: string) {
           <el-button text @click="() => addFilter('uploadTime')">上传时间</el-button>
         </div>
       </el-popover>
-    </template>
+    </template> -->
   </el-input>
 </template>
 

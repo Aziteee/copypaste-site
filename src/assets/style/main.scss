@@ -1,5 +1,24 @@
 @import 'mixins';
 
+// :root {
+//   --el-color-primary: #333333;
+//   // --el-color-primary: #9f573a;
+//   --el-color-primary-light-3: #be7558;
+//   --el-color-primary-light-5: #95604c;
+//   --el-color-primary-light-7: #ad7d6a;
+//   --el-color-primary-light-8: #caa293;
+//   --el-color-primary-light-9: #eccfc3;
+// }
+:root {
+  --el-color-primary: #333333;
+  --el-color-primary-light-3: #5d5d5d;
+  --el-color-primary-light-5: #777777;
+  --el-color-primary-light-7: #a2a2a2;
+  --el-color-primary-light-8: #c0c0c0;
+  --el-color-primary-light-9: #e3e3e3;
+  --el-color-primary-dark-2: #777777;
+}
+
 html, body, #app {
   @include overspread;
   margin: 0;
@@ -8,13 +27,69 @@ html, body, #app {
 
 * {
   word-break: break-word;
+
+  &:hover {
+    transition-duration: 0.2s;
+  }
 }
 
 mark {
-  background-color: #c6e2ff;
+  background-color: var(--el-color-primary-light-9);
 }
 
 #nprogress .bar {
-  background: #79bbff !important;
+  background: var(--el-color-primary) !important;
 }
 
+#nprogress {
+  box-shadow: var(--el-box-shadow);
+}
+
+.el-table {
+  --el-table-border: none;
+  --el-table-border-color: none;
+}
+
+.el-button--primary, .el-button--danger {
+  box-shadow: var(--el-box-shadow);
+  border-radius: 20px;
+}
+
+.el-message-box {
+  --el-messagebox-border-radius: 20px !important;
+}
+
+.el-input, .el-textarea {
+  --el-input-border-radius: 20px !important;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 6px;
+}
+
+.el-card {
+  --el-card-border-radius: 20px !important;
+
+  & > .el-card__header {
+    border-bottom: none;
+    padding-bottom: 0px;
+
+    & span {
+      font-size: large; font-weight: bold; font-family: Lora,source-han-serif-tc,serif;
+      // margin-top: 2px !important;
+    }
+  }
+}
+
+.el-message {
+  box-shadow: var(--el-box-shadow-lighter);
+  border-radius: 20px !important;
+  --el-message-bg-color: white !important;
+  --el-message-border-color: white !important;
+}
+
+.el-card.is-always-shadow {
+  box-shadow: var(--el-box-shadow-light) !important;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-size: large; font-weight: bold; font-family: Lora,source-han-serif-tc,serif;
+}

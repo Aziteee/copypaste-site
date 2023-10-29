@@ -8,6 +8,11 @@ import Like from '@icons/Like.vue'
 import { debounce } from 'lodash'
 import Windmill from '@/assets/icons/Windmill.vue'
 import Ranking from '@/assets/icons/Ranking.vue'
+import RightArrow from '@/assets/icons/RightArrow.vue'
+import { useTitle } from '@vueuse/core'
+
+const siteTitle = useTitle()
+siteTitle.value = '复制粘贴语录'
 
 const router = useRouter()
 
@@ -15,6 +20,7 @@ const loadingYiyan = ref(true)
 const yiyan = reactive<IArticle>({ id: '', text: '', uploadTime: '', likes: 0, uploader: '' })
 
 const fetchYiyan = debounce(() => {
+  console.log('clicked')
   loadingYiyan.value = true
   api.getRandomArticle()
     .then(response => {
@@ -41,33 +47,32 @@ fetchLikesRanking()
 </script>
 
 <template>
-  <el-space direction="vertical" :size="25">
-    <el-card shadow="never" class="box-card">
+  <el-space direction="vertical" :size="25" style="margin-bottom: -7px;">
+    <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <div style="display: flex; align-items: center;">
-            <el-icon style="margin-right: 7px;">
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <el-icon size="18" style="margin-right: 7px;">
               <Windmill />
             </el-icon>
             <span>随机一言</span>
           </div>
-          <el-button :icon="Refresh" @click="fetchYiyan">换一换</el-button>
+          <el-button title="换一换" :icon="Refresh" :circle="true" @click="fetchYiyan"></el-button>
         </div>
       </template>
       <el-skeleton v-if="loadingYiyan" :rows="3" animated />
       <template v-else>
         <el-text class="yiyan-text">{{ yiyan.text }}</el-text>
-        <el-divider class="yiyan-card-divider" />
-        <div class="info-section">
-          <el-text size="small" title="收录日期">{{ yiyan.uploadTime }}</el-text>
-          <el-link @click="() => router.push({ name: 'article', params: { id: yiyan.id } })">查看全文 »</el-link>
+        <div class="view-button-wrapper">
+          <el-button title="查看" type="primary" :circle="true" :icon="RightArrow" size="large"
+          @click="() => router.push({ name: 'article', params: { id: yiyan.id } })"></el-button>
         </div>
       </template>
     </el-card>
-    <el-card shadow="never" class="box-card">
+    <el-card class="box-card">
       <template #header>
         <div style="display: flex; align-items: center;">
-          <el-icon size="23" style="margin-right: 7px;">
+          <el-icon size="24" style="margin-right: 7px;">
             <Ranking />
           </el-icon>
           <span>排行榜</span>
@@ -75,13 +80,13 @@ fetchLikesRanking()
       </template>
       <el-skeleton v-if="loadingLikesRanking" :rows="5" animated />
       <template v-else>
-        <el-table :data="likesRanking" @cell-click="(row: IArticle) => router.push({ name: 'article', params: { id: row.id } })" style="width: 100%">
-          <el-table-column label="语句">
+        <el-table class="ranking-table" :data="likesRanking" @cell-click="(row: IArticle) => router.push({ name: 'article', params: { id: row.id } })" style="width: 100%;">
+          <el-table-column>
             <template #default="scope">
               <el-text :truncated="true">{{ scope.row.text }}</el-text>
             </template>
           </el-table-column>
-          <el-table-column label="点赞数" width="70">
+          <el-table-column width="70">
             <template #default="scope">
               <div style="display: flex; align-items: center">
                 <el-icon>
@@ -99,6 +104,24 @@ fetchLikesRanking()
 
 <style scoped lang="scss">
 @import '@style/mixins.scss';
+
+.ranking-table {
+  // 去除标题栏占用的空间
+  &:deep(.el-table__header-wrapper) {
+    display: none;
+  }
+}
+
+.view-button-wrapper {
+  margin-top: 20px;
+  // 查看按钮居中显示
+  text-align: center;
+
+  & > .el-button {
+    // 按钮图标变大
+    font-size: large;
+  }
+}
 
 .card-header {
   display: flex;

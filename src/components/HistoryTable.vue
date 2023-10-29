@@ -53,8 +53,8 @@ function handleCellClick(row: IArticle) {
     cursor: default;
   }
 
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>

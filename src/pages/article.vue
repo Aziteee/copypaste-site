@@ -8,9 +8,15 @@ import { type IArticle, isLikedStatus } from '@/types'
 import * as api from '@/api'
 import Like from '@icons/Like.vue'
 import { debounce } from 'lodash'
+import { useMobileSize } from '@composables/mobileSize'
+import { useTitle } from '@vueuse/core'
+
+const siteTitle = useTitle();
 
 const route = useRoute()
 const router = useRouter()
+
+const { isMobileSize } = useMobileSize()
 
 const historyStore = useHistoryStore()
 
@@ -42,6 +48,8 @@ function fetchData() {
       data.likes = result.likes
       data.uploader = result.uploader
       loading.value = false
+
+      siteTitle.value = result.text.substring(0, 10) + '... | 复制粘贴语录'
 
       historyStore.add({
         ...data,
@@ -102,7 +110,7 @@ const queryUploader = debounce(() => {
 
 <template>
   <article class="content">
-    <el-card shadow="never" class="content-card">
+    <el-card shadow="always" class="content-card">
       <el-skeleton v-if="loading" :rows="4" animated />
       <template v-if="!loading" #header>
         <el-descriptions :column="2" class="article-description">
@@ -112,10 +120,10 @@ const queryUploader = debounce(() => {
                 <el-icon style="margin-right: 6px;">
                   <User />
                 </el-icon>
-                <span>上传者</span>
+                <span v-if="!isMobileSize">上传者</span>
               </div>
             </template>
-            <el-link :underline="false" style="margin-top: -2px;" @click="queryUploader">{{ data.uploader }}</el-link>
+            <el-link style="margin-top: -5px;" @click="queryUploader">{{ data.uploader }}</el-link>
           </el-descriptions-item>
           <el-descriptions-item label="上传时间">
             <template #label>
@@ -123,24 +131,36 @@ const queryUploader = debounce(() => {
                 <el-icon style="margin-right: 6px;">
                   <Clock />
                 </el-icon>
-                <span>上传时间</span>
+                <span v-if="!isMobileSize">上传时间</span>
               </div>
             </template>
-            {{ data.uploadTime }}
+            <el-text style="line-height: 10px;">{{ data.uploadTime }}</el-text>
           </el-descriptions-item>
         </el-descriptions>
       </template>
-      <el-text v-if="!loading" size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
+      <div v-if="!loading">
+        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
+          <el-icon size="small" color="#C0C4CC">
+            <Like />
+          </el-icon>
+          <el-text style="color: #C0C4CC;">{{ data.likes }}</el-text>
+        </div>
+        <el-text size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
+        <div class="button-group">
+          <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" :circle="true" type="danger" size="large" @click="unlike"></el-button>
+          <el-button v-else :icon="Like" :circle="true" type="primary" size="large" @click="like"></el-button>
+          <!-- <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" title="取消点赞" @click="unlike" type="danger" plain>{{ data.likes }}</el-button>
+        <el-button v-else :disabled="isLiked === isLikedStatus.UNKNOWN" :icon="Like" color="#F56C6C" plain style="--el-button-bg-color:var(--el-fill-color-blank);--el-button-text-color:var(--el-text-color-regular);--el-button-border-color:var(--el-border-color);" title="点赞" @click="like">{{ data.likes || '点赞' }}</el-button> -->
+          <el-button :icon="DocumentCopy" :circle="true" type="primary" size="large" @click="copy"></el-button>
+        </div>
+      </div>
     </el-card>
-    <div class="button-group">
-      <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" title="取消点赞" @click="unlike" type="primary" plain>{{ data.likes }}</el-button>
-      <el-button v-else :disabled="isLiked === isLikedStatus.UNKNOWN" :icon="Like" title="点赞" @click="like">{{ data.likes || '点赞' }}</el-button>
-      <el-button :icon="DocumentCopy" @click="copy">复制</el-button>
-    </div>
   </article>
 </template>
 
 <style scoped lang="scss">
+@import '@style/constants.scss';
+
 .cell-item {
   display: flex;
   align-items: center;
@@ -157,9 +177,17 @@ const queryUploader = debounce(() => {
     padding-bottom: 0px !important;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 
     & .el-descriptions__label {
       margin-right: 10px;
+
+      // 移动端取消图标与文本的间距
+      @media screen {
+        @media (max-width: $MIN_MOBILE_WIDTH) {
+          margin-right: 0px;
+        }
+      }
     }
   }
 }
@@ -182,11 +210,33 @@ const queryUploader = debounce(() => {
 
   .content-card {
     min-width: 330px;
+
+    &:deep(.el-card__header) span {
+      font-size: medium;
+      margin-top: 0px;
+      font-weight: 500;
+      font-family: none;
+    }
+
+    &:deep(.el-card__header) {
+      border-bottom: 1px solid var(--el-card-border-color) !important;
+      padding-bottom: 15px;
+    }
+
+    &:deep(.el-card__body) {
+      padding-top: 15px;
+    }
+
+    .el-link__inner {
+      font-weight: 500 !important;
+    }
   }
 
   .button-group {
     margin-top: 20px;
     display: flex;
+    justify-content: center;
+    gap: 15px;
   }
 }
 </style>

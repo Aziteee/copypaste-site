@@ -8,6 +8,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/theme-chalk/src/message-box.scss'
 import 'element-plus/theme-chalk/src/message.scss'
 import 'element-plus/theme-chalk/src/notification.scss'
+
 import NProgress from 'nprogress';
 import "nprogress/nprogress.css";
 
@@ -20,19 +21,20 @@ NProgress.configure({
 })
 
 router.beforeEach((to, from , next) => {
- NProgress.start();
-  next();
+  NProgress.start()
+  next()
 });
 
 router.afterEach(() => {  
  NProgress.done()
+ scrollTo(0, 0)
 })
 
 
 // 自动切换深色模式
-// if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-//   document.getElementsByTagName('html')[0].className = 'dark'
-// }
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.getElementsByTagName('html')[0].className = 'dark'
+}
 
 const pinia = createPinia()
 
