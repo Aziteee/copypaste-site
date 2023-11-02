@@ -1,14 +1,7 @@
+/* 对ElementPlus的样式进行大修改 */
+
 @import 'mixins';
 
-// :root {
-//   --el-color-primary: #333333;
-//   // --el-color-primary: #9f573a;
-//   --el-color-primary-light-3: #be7558;
-//   --el-color-primary-light-5: #95604c;
-//   --el-color-primary-light-7: #ad7d6a;
-//   --el-color-primary-light-8: #caa293;
-//   --el-color-primary-light-9: #eccfc3;
-// }
 :root {
   --el-color-primary: #333333;
   --el-color-primary-light-3: #5d5d5d;
@@ -18,6 +11,9 @@
   --el-color-primary-light-9: #e3e3e3;
   --el-color-primary-dark-2: #777777;
 }
+
+$CARD-SHADOW: 0px 0px 15px 0px rgba(0,0,0,.03),0px 2px 30px 0px rgba(0,0,0,.08),0px 0px 1px 0px rgba(0,0,0,.3);
+$BUTTON-SHADOW: 0 10px 15px -10px var(--el-color-primary);
 
 html, body, #app {
   @include overspread;
@@ -33,25 +29,30 @@ html, body, #app {
   }
 }
 
+// 标记文本的背景
 mark {
   background-color: var(--el-color-primary-light-9);
 }
 
+// 进度条颜色
 #nprogress .bar {
   background: var(--el-color-primary) !important;
 }
 
+// 进度条阴影
 #nprogress {
   box-shadow: var(--el-box-shadow);
 }
 
+// 去除表格的边框
 .el-table {
   --el-table-border: none;
   --el-table-border-color: none;
 }
 
+// 按钮阴影、圆角
 .el-button--primary, .el-button--danger {
-  box-shadow: var(--el-box-shadow);
+  box-shadow: $BUTTON-SHADOW;
   border-radius: 20px;
 }
 
@@ -59,26 +60,37 @@ mark {
   --el-messagebox-border-radius: 20px !important;
 }
 
+// 输入框圆角、阴影
 .el-input, .el-textarea {
   --el-input-border-radius: 20px !important;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 6px;
 }
 
+// 卡片
 .el-card {
+  // 边框变细
+  border-width: 0px !important;
+
+  // 圆角统一为20px
   --el-card-border-radius: 20px !important;
 
   & > .el-card__header {
+    // 取消分割线
     border-bottom: none;
     padding-bottom: 0px;
 
     & span {
-      font-size: large; font-weight: bold; font-family: Lora,source-han-serif-tc,serif;
+      // 标题字体改为宋体、加粗、增大字号
+      font-size: large; 
+      font-weight: bold; 
+      font-family: Lora,source-han-serif-tc,serif;
       // margin-top: 2px !important;
     }
   }
 }
 
+// 消息框阴影、圆角、背景色
 .el-message {
   box-shadow: var(--el-box-shadow-lighter);
   border-radius: 20px !important;
@@ -86,10 +98,12 @@ mark {
   --el-message-border-color: white !important;
 }
 
+// 卡片阴影
 .el-card.is-always-shadow {
-  box-shadow: var(--el-box-shadow-light) !important;
+  box-shadow: $CARD-SHADOW !important;
 }
 
+// 标题字体改为宋体、加粗、增大字号
 h1,h2,h3,h4,h5,h6 {
   font-size: large; font-weight: bold; font-family: Lora,source-han-serif-tc,serif;
 }

@@ -33,7 +33,7 @@ router.afterEach(() => {
 
 // 自动切换深色模式
 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.getElementsByTagName('html')[0].className = 'dark'
+  // document.getElementsByTagName('html')[0].className = 'dark'
 }
 
 const pinia = createPinia()
