@@ -6,6 +6,7 @@ import ArticleTable from '@components/ArticleTable.vue'
 import { useMobileSize } from '@composables/mobileSize'
 import * as api from '@/api'
 import { useTitle } from '@vueuse/core'
+import ArticleList from '@/components/ArticleList.vue'
 
 const siteTitle = useTitle()
 
@@ -82,7 +83,7 @@ fetchData(route.query)
 <template>
   <el-skeleton v-if="loading" :rows="5" animated />
   <template v-if="!loading">
-    <article-table class="article-table" :title="title" :data="data" @article-selected="handleSelect" />
+    <ArticleList class="article-table" :title="title" :data="data" :show-likes="false" @article-selected="handleSelect" />
     <el-pagination v-if="data.length != 0" v-model:current-page="page" :layout="layout" :page-size="pp" :pager-count="pagerCount" :total="total"
                    class="pagination" />
     <el-empty v-if="data.length === 0" description="空空如也" />
@@ -90,14 +91,21 @@ fetchData(route.query)
 </template>
 
 <style scoped lang="scss">
+@import '@style/constants.scss';
+
 .pagination {
   margin-top: 20px
 }
 
-@media screen and (max-width: 600px) {
-  .article-table {
-    margin-top: -10px;
-    margin-bottom: 0px;
+.article-table {
+  margin: 10px 10vw;
+
+  @media screen {
+    @media (max-width: $MIN_MOBILE_WIDTH) {
+      margin: 10px 10px;
+      margin-top: -10px;
+      margin-bottom: 0px;
+    }
   }
 }
 </style>

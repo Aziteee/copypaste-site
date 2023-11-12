@@ -2,16 +2,20 @@
 import { reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { useHistoryStore } from '@stores/history'
-import { DocumentCopy, User, Clock } from '@element-plus/icons-vue'
+import { User, Clock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { type IArticle, isLikedStatus } from '@/types'
 import * as api from '@/api'
 import Like from '@icons/Like.vue'
+import Copy from '@icons/Copy.vue'
 import { debounce } from 'lodash'
 import { useMobileSize } from '@composables/mobileSize'
 import { useTitle } from '@vueuse/core'
+import { useLogto } from '@logto/vue'
 
-const siteTitle = useTitle();
+const { getAccessToken } = useLogto()
+
+const siteTitle = useTitle()
 
 const route = useRoute()
 const router = useRouter()
@@ -21,7 +25,7 @@ const { isMobileSize } = useMobileSize()
 const historyStore = useHistoryStore()
 
 const loading = ref(true)
-const data = reactive<IArticle>({ id: route.params.id as string, text: '', uploadTime: '', likes: 0, uploader: '' })
+const data = reactive<IArticle>({ id: route.params.id as string, text: '', uploadTime: '', likes: 0, uploader: '', uploaderId: '' })
 const isLiked = ref(isLikedStatus.UNKNOWN)
 
 onBeforeRouteUpdate((to) => {
@@ -29,15 +33,7 @@ onBeforeRouteUpdate((to) => {
   fetchData()
 })
 
-api.isLiked(data.id).then(() => {
-  isLiked.value = isLikedStatus.LIKED
-}).catch(error => {
-  if (error.response.status === 404) {
-    isLiked.value = isLikedStatus.UNLIKED
-  }
-})
-
-function fetchData() {
+async function fetchData() {
   loading.value = true
   api.getArticleById(data.id)
     .then((response) => {
@@ -46,7 +42,14 @@ function fetchData() {
       data.text = result.text
       data.uploadTime = result.uploadTime
       data.likes = result.likes
-      data.uploader = result.uploader
+
+      if (result.uploaderName) {
+        data.uploader = result.uploaderName
+      } else {
+        data.uploader = result.uploader
+      }
+      data.uploaderId = result.uploader
+
       loading.value = false
 
       siteTitle.value = result.text.substring(0, 10) + '... | 复制粘贴语录'
@@ -57,11 +60,19 @@ function fetchData() {
         text: result.text.length > 30 ? result.text.substring(0, 30) : result.text
       })
     })
+
+  api.isLiked(data.id, (await getAccessToken('https://cp.azite.cn/api')) as string).then(() => {
+    isLiked.value = isLikedStatus.LIKED
+  }).catch(error => {
+    if (error.response.status === 404) {
+      isLiked.value = isLikedStatus.UNLIKED
+    }
+  })
 }
 fetchData()
 
-const like = debounce(() => {
-  api.likeArticle(data.id)
+const like = debounce(async () => {
+  api.likeArticle(data.id, (await getAccessToken('https://cp.azite.cn/api')) as string)
     .then(response => {
       if (response.status === 204) {
         data.likes++
@@ -73,8 +84,8 @@ const like = debounce(() => {
   trailing: false
 })
 
-const unlike = debounce(() => {
-  api.unlikeArticle(data.id)
+const unlike = debounce(async () => {
+  api.unlikeArticle(data.id, (await getAccessToken('https://cp.azite.cn/api')) as string)
     .then(response => {
       if (response.status === 204) {
         data.likes--
@@ -101,7 +112,7 @@ function copy() {
 }
 
 const queryUploader = debounce(() => {
-  router.push({ name: 'search', query: { q: `uploader:${data.uploader}` } })
+  router.push({ name: 'user', params: { id: data.uploaderId } })
 }, 300, {
   leading: true,
   trailing: false
@@ -147,11 +158,11 @@ const queryUploader = debounce(() => {
         </div>
         <el-text size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
         <div class="button-group">
-          <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" :circle="true" type="danger" size="large" @click="unlike"></el-button>
-          <el-button v-else :icon="Like" :circle="true" type="primary" size="large" @click="like"></el-button>
+          <el-button v-if="isLiked === isLikedStatus.LIKED" style="font-size: large;" :icon="Like" :circle="true" type="danger" size="large" @click="unlike"></el-button>
+          <el-button v-else :icon="Like" style="font-size: large;" :circle="true" type="primary" size="large" @click="like"></el-button>
           <!-- <el-button v-if="isLiked === isLikedStatus.LIKED" :icon="Like" title="取消点赞" @click="unlike" type="danger" plain>{{ data.likes }}</el-button>
         <el-button v-else :disabled="isLiked === isLikedStatus.UNKNOWN" :icon="Like" color="#F56C6C" plain style="--el-button-bg-color:var(--el-fill-color-blank);--el-button-text-color:var(--el-text-color-regular);--el-button-border-color:var(--el-border-color);" title="点赞" @click="like">{{ data.likes || '点赞' }}</el-button> -->
-          <el-button :icon="DocumentCopy" :circle="true" type="primary" size="large" @click="copy"></el-button>
+          <el-button :icon="Copy" :circle="true" type="primary" size="large" style="font-size: large;" @click="copy"></el-button>
         </div>
       </div>
     </el-card>

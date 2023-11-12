@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import HeaderView from '@components/HeaderView.vue'
 import { provide } from 'vue'
-
 // 提供一些默认配置
 provide('default_pp', 10)
 

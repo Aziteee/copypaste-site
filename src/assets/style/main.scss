@@ -14,11 +14,16 @@
 
 $CARD-SHADOW: 0px 0px 15px 0px rgba(0,0,0,.03),0px 2px 30px 0px rgba(0,0,0,.08),0px 0px 1px 0px rgba(0,0,0,.3);
 $BUTTON-SHADOW: 0 10px 15px -10px var(--el-color-primary);
+$SHADOW-LIGHTEST: rgba(0, 0, 0, 0.04) 0px 4px 6px;
 
 html, body, #app {
   @include overspread;
   margin: 0;
   padding: 0;
+}
+
+div {
+  box-sizing: border-box;
 }
 
 * {
@@ -56,6 +61,15 @@ mark {
   border-radius: 20px;
 }
 
+.el-button {
+  border-radius: 20px;
+}
+
+.is-plain {
+  background-color: white;
+  box-shadow: $SHADOW-LIGHTEST;
+}
+
 .el-message-box {
   --el-messagebox-border-radius: 20px !important;
 }
@@ -64,7 +78,7 @@ mark {
 .el-input, .el-textarea {
   --el-input-border-radius: 20px !important;
   border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 6px;
+  box-shadow: $SHADOW-LIGHTEST;
 }
 
 // 卡片

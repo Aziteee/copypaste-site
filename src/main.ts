@@ -2,6 +2,7 @@ import { createApp, watch } from 'vue'
 import App from '@/App.vue'
 import router from '@/routes'
 import { createPinia } from 'pinia'
+import { createLogto, LogtoConfig } from '@logto/vue'
 
 import '@style/main.scss'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -9,8 +10,8 @@ import 'element-plus/theme-chalk/src/message-box.scss'
 import 'element-plus/theme-chalk/src/message.scss'
 import 'element-plus/theme-chalk/src/notification.scss'
 
-import NProgress from 'nprogress';
-import "nprogress/nprogress.css";
+import NProgress from 'nprogress'
+import "nprogress/nprogress.css"
 
 NProgress.configure({
   easing: 'ease',  // 动画的缓动函数（easing function）。这里设为 ease，表默认的缓动函数。   
@@ -23,7 +24,7 @@ NProgress.configure({
 router.beforeEach((to, from , next) => {
   NProgress.start()
   next()
-});
+})
 
 router.afterEach(() => {  
  NProgress.done()
@@ -46,8 +47,16 @@ watch(pinia.state, (state) => {
   localStorage.setItem('pinia', JSON.stringify(state))
 }, { deep: true })
 
+const config: LogtoConfig = {
+  endpoint: 'https://auth.azite.cn/',
+  appId: 'a7au9nruhet2zm1wupltz',
+  resources: ['https://cp.azite.cn/api']
+}
+
 const app = createApp(App)
 
+app.use(createLogto, config);
 app.use(pinia)
 app.use(router)
+
 app.mount('#app')

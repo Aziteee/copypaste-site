@@ -4,6 +4,6 @@ import { computed } from "vue"
 const { width } = useWindowSize()
 
 export function useMobileSize () {
-  const isMobileSize = computed(() => width.value < 600)
+  const isMobileSize = computed(() => width.value < 768)
   return { isMobileSize }
 }

@@ -14,7 +14,9 @@ const requests = axios.create({
 requests.interceptors.response.use(null, (error) => {
   if (error.response?.data?.error) {
     ElMessage.error(error.response.data.error)
-  } else error.message ?? ElMessage.error(error.message)
+  } else if (error.response?.data?.message) {
+    ElMessage.error(error.response.data.message)
+  }
   return Promise.reject(error)
 })
 

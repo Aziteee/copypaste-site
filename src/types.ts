@@ -1,9 +1,10 @@
 export interface IArticle {
-  id: string,
-  text: string,
-  uploadTime: string,
-  likes: number,
+  id: string
+  text: string
+  uploadTime: string
+  likes: number
   uploader: string
+  uploaderId?: string
 }
 
 export type IHistory = IArticle
@@ -36,12 +37,22 @@ export interface IAPISearchParams {
 }
 
 export interface IAPIUploadParams {
-  text: string,
-  uploader: string
+  text: string
 }
 
 export enum isLikedStatus {
   LIKED,
   UNLIKED,
   UNKNOWN
+}
+
+export interface IUserInfo {
+  id: string
+  name: string
+  avatar: string
+}
+
+export interface IAPIPatchUserProfile {
+  name?: string,
+  avatar?: string
 }

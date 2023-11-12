@@ -20,7 +20,6 @@ const loadingYiyan = ref(true)
 const yiyan = reactive<IArticle>({ id: '', text: '', uploadTime: '', likes: 0, uploader: '' })
 
 const fetchYiyan = debounce(() => {
-  console.log('clicked')
   loadingYiyan.value = true
   api.getRandomArticle()
     .then(response => {
@@ -60,14 +59,25 @@ fetchLikesRanking()
           <el-button title="换一换" :icon="Refresh" :circle="true" @click="fetchYiyan"></el-button>
         </div>
       </template>
-      <el-skeleton v-if="loadingYiyan" :rows="3" animated />
-      <template v-else>
-        <el-text class="yiyan-text">{{ yiyan.text }}</el-text>
-        <div class="view-button-wrapper">
-          <el-button title="查看" type="primary" :circle="true" :icon="RightArrow" size="large"
-          @click="() => router.push({ name: 'article', params: { id: yiyan.id } })"></el-button>
-        </div>
-      </template>
+      <el-skeleton :loading="loadingYiyan" :rows="3" :throttle="500" animated>
+        <template #default>
+          <el-text class="yiyan-text">{{ yiyan.text }}</el-text>
+          <div class="yiyan-buttons-wrapper">
+            <!-- <div class="page-buttons-wrapper">
+            <el-button title="上一个" type="primary" :circle="true" :icon="LeftArrow" size="large"
+            @click="() => router.push({ name: 'article', params: { id: yiyan.id } })"></el-button>
+            <el-button title="下一个" type="primary" :circle="true" :icon="RightArrow" size="large"
+            @click="() => router.push({ name: 'article', params: { id: yiyan.id } })"></el-button>
+          </div>
+          <div class="operation-buttons-wrapper">
+            <el-button title="查看" type="primary" :circle="true" :icon="RightArrow" size="large"
+            @click="() => router.push({ name: 'article', params: { id: yiyan.id } })"></el-button>
+          </div> -->
+            <el-button title="查看" type="primary" :circle="true" :icon="RightArrow" size="large"
+                       @click="() => router.push({ name: 'article', params: { id: yiyan.id } })"></el-button>
+          </div>
+        </template>
+      </el-skeleton>
     </el-card>
     <el-card class="box-card">
       <template #header>
@@ -106,18 +116,21 @@ fetchLikesRanking()
 @import '@style/mixins.scss';
 
 .ranking-table {
+
   // 去除标题栏占用的空间
   &:deep(.el-table__header-wrapper) {
     display: none;
   }
 }
 
-.view-button-wrapper {
+.yiyan-buttons-wrapper {
   margin-top: 20px;
-  // 查看按钮居中显示
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  // justify-content: space-between;
+  align-items: center;
 
-  & > .el-button {
+  & .el-button {
     // 按钮图标变大
     font-size: large;
   }
