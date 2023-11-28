@@ -36,6 +36,9 @@ export interface IAPISearchParams {
   pn?: number
 }
 
+/**
+ * 上传接口
+ */
 export interface IAPIUploadParams {
   text: string
 }
@@ -55,4 +58,17 @@ export interface IUserInfo {
 export interface IAPIPatchUserProfile {
   name?: string,
   avatar?: string
+}
+
+export interface IComment {
+  id: string
+  
+  // 评论者信息
+  uid: string
+  avatar: string
+  name: string
+
+  content: string
+  time: string
+  agree: number
 }

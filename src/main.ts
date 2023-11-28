@@ -3,22 +3,24 @@ import App from '@/App.vue'
 import router from '@/routes'
 import { createPinia } from 'pinia'
 import { createLogto, LogtoConfig } from '@logto/vue'
+import * as consts from './consts'
 
 import '@style/main.scss'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/theme-chalk/src/message-box.scss'
 import 'element-plus/theme-chalk/src/message.scss'
 import 'element-plus/theme-chalk/src/notification.scss'
+import 'element-plus/theme-chalk/src/input.scss'
 
 import NProgress from 'nprogress'
 import "nprogress/nprogress.css"
 
 NProgress.configure({
-  easing: 'ease',  // 动画的缓动函数（easing function）。这里设为 ease，表默认的缓动函数。   
-  speed: 500,  // 递增进度条的速度;单位是毫秒    
-  showSpinner: false, // 是否显示加载ico;是否在显示加载图标   
-  trickleSpeed: 200, // 自动递增间隔;这里表示每间隔 200 毫秒自动递增一次进度   
-  minimum: 0.3 // 初始化时的最小百分比
+  easing: 'ease',
+  speed: 500,
+  showSpinner: false,
+  trickleSpeed: 200,
+  minimum: 0.3
 })
 
 router.beforeEach((to, from , next) => {
@@ -48,9 +50,9 @@ watch(pinia.state, (state) => {
 }, { deep: true })
 
 const config: LogtoConfig = {
-  endpoint: 'https://auth.azite.cn/',
-  appId: 'a7au9nruhet2zm1wupltz',
-  resources: ['https://cp.azite.cn/api']
+  endpoint: consts.endpoint,
+  appId: consts.appId,
+  resources: [consts.resource]
 }
 
 const app = createApp(App)

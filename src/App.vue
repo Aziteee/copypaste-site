@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import HeaderView from '@components/HeaderView.vue'
-import { provide } from 'vue'
-// 提供一些默认配置
-provide('default_pp', 10)
+import { useLogto } from '@logto/vue'
+import { useAccessToken } from '@/composables/accessToken'
+import * as consts from '@/consts'
+import { ElMessage } from 'element-plus'
 
 // import { ElNotification } from 'element-plus'
 // import { onMounted } from 'vue'
@@ -21,6 +22,21 @@ provide('default_pp', 10)
 //     })
 //   }
 // })
+
+const { isAuthenticated, getAccessToken, signOut } = useLogto()
+setTimeout(() => {
+  if (isAuthenticated.value) {
+    const { expired } = useAccessToken(getAccessToken)
+    if (expired.value) {
+      console.warn('TOKEN EXPIRED')
+      ElMessage('登录信息过期，请重新登录')
+      setTimeout(() => {
+        signOut(consts.baseUrl)
+      }, 1000)
+    }
+  }
+}, 1000)
+
 </script>
 
 <template>
@@ -31,7 +47,7 @@ provide('default_pp', 10)
     </el-main>
     <el-footer class="footer">
       <div>
-        <el-link href="https://github.com/Aziteee/copypaste-site">Github</el-link>
+        <el-link href="https://api.azite.cn/doc/#/copypaste">API</el-link>
         <el-divider direction="vertical" />
         <el-link href="https://tieba.baidu.com/f?kw=%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4" target="_blank">百度贴吧 - 复制粘贴吧</el-link>
         <el-divider direction="vertical" />

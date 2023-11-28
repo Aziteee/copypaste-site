@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, watch, inject } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { type IAPISearchParams, type IArticle } from '@/types'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
-import ArticleTable from '@components/ArticleTable.vue'
 import { useMobileSize } from '@composables/mobileSize'
 import * as api from '@/api'
 import { useTitle } from '@vueuse/core'
 import ArticleList from '@/components/ArticleList.vue'
+import * as consts from '@/consts'
 
 const siteTitle = useTitle()
 
@@ -17,12 +17,11 @@ const { isMobileSize } = useMobileSize()
 
 const data = ref<IArticle[]>([])
 
-const defaultPP = inject('default_pp')
 const loading = ref(true)
 
 // 分页相关数据
 const total = ref(0)
-const pp = ref(Number(route.query.pp ?? defaultPP))
+const pp = ref(Number(route.query.pp ?? consts.perPageNum))
 const pagerCount = computed(() => isMobileSize.value ? 4 : 7) // 移动端最多显示4个页码
 const layout = computed(() => `prev,pager,next${isMobileSize.value ? '' : ',jumper'}`) // 移动端不显示跳转页面
 
@@ -101,7 +100,7 @@ fetchData(route.query)
   margin: 10px 10vw;
 
   @media screen {
-    @media (max-width: $MIN_MOBILE_WIDTH) {
+    @media (max-width: $MAX_MOBILE_WIDTH) {
       margin: 10px 10px;
       margin-top: -10px;
       margin-bottom: 0px;

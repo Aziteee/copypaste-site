@@ -1,6 +1,6 @@
 /* 对ElementPlus的样式进行大修改 */
 
-@import 'mixins';
+@import "mixins";
 
 :root {
   --el-color-primary: #333333;
@@ -12,11 +12,44 @@
   --el-color-primary-dark-2: #777777;
 }
 
-$CARD-SHADOW: 0px 0px 15px 0px rgba(0,0,0,.03),0px 2px 30px 0px rgba(0,0,0,.08),0px 0px 1px 0px rgba(0,0,0,.3);
+:root {
+  .list-move,
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.5 ease;
+  }
+
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  .list-leave-active {
+    position: absolute;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+}
+
+$CARD-SHADOW:
+  0px 0px 15px 0px rgba(0, 0, 0, 0.03),
+  0px 2px 30px 0px rgba(0, 0, 0, 0.08),
+  0px 0px 1px 0px rgba(0, 0, 0, 0.3);
 $BUTTON-SHADOW: 0 10px 15px -10px var(--el-color-primary);
 $SHADOW-LIGHTEST: rgba(0, 0, 0, 0.04) 0px 4px 6px;
 
-html, body, #app {
+html,
+body,
+#app {
   @include overspread;
   margin: 0;
   padding: 0;
@@ -51,13 +84,14 @@ mark {
 
 // 去除表格的边框
 .el-table {
-  --el-table-border: none;
-  --el-table-border-color: none;
+  --el-table-border: none !important;
+  --el-table-border-color: none !important;
 }
 
 // 按钮阴影、圆角
-.el-button--primary, .el-button--danger {
-  box-shadow: $BUTTON-SHADOW;
+.el-button--primary,
+.el-button--danger {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 6px;
   border-radius: 20px;
 }
 
@@ -75,7 +109,8 @@ mark {
 }
 
 // 输入框圆角、阴影
-.el-input, .el-textarea {
+.el-input,
+.el-textarea {
   --el-input-border-radius: 20px !important;
   border-radius: 20px;
   box-shadow: $SHADOW-LIGHTEST;
@@ -96,9 +131,9 @@ mark {
 
     & span {
       // 标题字体改为宋体、加粗、增大字号
-      font-size: large; 
-      font-weight: bold; 
-      font-family: Lora,source-han-serif-tc,serif;
+      font-size: large;
+      font-weight: bold;
+      font-family: Lora, source-han-serif-tc, serif;
       // margin-top: 2px !important;
     }
   }
@@ -118,6 +153,13 @@ mark {
 }
 
 // 标题字体改为宋体、加粗、增大字号
-h1,h2,h3,h4,h5,h6 {
-  font-size: large; font-weight: bold; font-family: Lora,source-han-serif-tc,serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: large;
+  font-weight: bold;
+  font-family: Lora, source-han-serif-tc, serif;
 }

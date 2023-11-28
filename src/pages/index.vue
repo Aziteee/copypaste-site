@@ -17,17 +17,21 @@ siteTitle.value = '复制粘贴语录'
 const router = useRouter()
 
 const loadingYiyan = ref(true)
+const showYiyanText = ref(true)
 const yiyan = reactive<IArticle>({ id: '', text: '', uploadTime: '', likes: 0, uploader: '' })
 
 const fetchYiyan = debounce(() => {
-  loadingYiyan.value = true
   api.getRandomArticle()
     .then(response => {
-      const result = response.data[0]
-      yiyan.id = result.id
-      yiyan.text = result.text
-      yiyan.uploadTime = result.uploadTime
-      loadingYiyan.value = false
+      showYiyanText.value = false
+      setTimeout(() => {
+        const result = response.data[0]
+        yiyan.id = result.id
+        yiyan.text = result.text
+        yiyan.uploadTime = result.uploadTime
+        loadingYiyan.value = false
+        showYiyanText.value = true
+      }, 500)
     })
 }, 200, { leading: true })
 fetchYiyan()
@@ -61,7 +65,9 @@ fetchLikesRanking()
       </template>
       <el-skeleton :loading="loadingYiyan" :rows="3" :throttle="500" animated>
         <template #default>
-          <el-text class="yiyan-text">{{ yiyan.text }}</el-text>
+          <Transition name="fade">
+            <el-text v-if="showYiyanText" class="yiyan-text">{{ yiyan.text }}</el-text>
+          </Transition>
           <div class="yiyan-buttons-wrapper">
             <!-- <div class="page-buttons-wrapper">
             <el-button title="上一个" type="primary" :circle="true" :icon="LeftArrow" size="large"
@@ -88,7 +94,7 @@ fetchLikesRanking()
           <span>排行榜</span>
         </div>
       </template>
-      <el-skeleton v-if="loadingLikesRanking" :rows="5" animated />
+      <el-skeleton v-if="loadingLikesRanking" :throttle="500" :rows="5" animated />
       <template v-else>
         <el-table class="ranking-table" :data="likesRanking" @cell-click="(row: IArticle) => router.push({ name: 'article', params: { id: row.id } })" style="width: 100%;">
           <el-table-column>

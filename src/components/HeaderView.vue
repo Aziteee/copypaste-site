@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { UserFilled } from '@element-plus/icons-vue'
+import { UserFilled, Search } from '@element-plus/icons-vue'
 import Menu from '@/assets/icons/Menu.vue'
 import { useRouter } from 'vue-router'
-import SearchBar from '@components/SearchBar.vue'
-import HistoryTable from '@components/HistoryTable.vue'
+// import HistoryTable from '@components/HistoryTable.vue'
 import UserAvatar from './UserAvatar.vue'
 import { ref, h } from 'vue'
 import { ElMessageBox, ElMessage, ElInput, ElText } from 'element-plus'
@@ -13,23 +12,28 @@ import { useLogto } from '@logto/vue'
 import Upload from '@/assets/icons/Upload.vue'
 import SignOut from '@/assets/icons/SignOut.vue'
 import { useUserStore } from '@/stores/user'
+import * as consts from '@/consts'
+import { useAccessToken } from '@/composables/accessToken'
+import { debounce } from 'lodash'
 
 const userStore = useUserStore()
 
 const { signIn, isAuthenticated, signOut, getAccessToken } = useLogto()
+const { accessToken } = useAccessToken(getAccessToken)
 const router = useRouter()
 
 const drawerShow = ref(false)
-const endpoint = `${location.protocol}//${location.host}`
 
-const onClickSignIn = () => signIn(`${endpoint}/callback`)
+const searchInput = ref('')
+
+const onClickSignIn = () => signIn(consts.redirectUrl)
 const onClickSignOut = () => {
   userStore.clearUserInfo()
-  signOut(endpoint)
+  signOut(consts.baseUrl)
 }
 const onClickUserCenter = () => {
   drawerShow.value = false
-  // router.push({ name: 'user', params: { id: userStore.userInfo.id } })
+  router.push({ name: 'user', params: { id: userStore.userInfo.id } })
 }
 
 function openUploadBox() {
@@ -64,7 +68,7 @@ function openUploadBox() {
         instance.confirmButtonText = '上传中...'
         api.uploadArticle({
           text: inputText.value
-        }, (await getAccessToken('https://cp.azite.cn/api')) as string)
+        }, accessToken.value)
           .then((response) => {
             done()
             ElMessage.success('上传成功')
@@ -80,6 +84,13 @@ function openUploadBox() {
     }
   })
 }
+
+const onClickSearch = debounce(() => {
+  router.push({ name: 'search', query: { q: searchInput.value, pp: consts.perPageNum, pn: 1 } })
+}, 300, {
+  leading: true,
+  trailing: false
+})
 </script>
 
 <template>
@@ -90,7 +101,7 @@ function openUploadBox() {
           <img :src="Logo" class="logo-img" />
         </div>
         <el-space size="large" class="menu-section desktop">
-          <SearchBar class="search-box" />
+          <el-input class="search-box" v-model="searchInput" placeholder="搜索..." :prefix-icon="Search" @keyup.enter="onClickSearch"></el-input>
           <el-popover v-if="isAuthenticated" trigger="click" width="150px">
             <template #reference>
               <UserAvatar class="avatar" :src="userStore.userInfo.avatar" :hover-shadow="true" />
@@ -126,12 +137,15 @@ function openUploadBox() {
     </el-header>
     <el-drawer v-model="drawerShow" :with-header="false" size="80%">
       <div class="mobile-drawer">
-        <div class="profile-container" @click="onClickSignIn">
-          <UserAvatar class="avatar" :src="userStore.userInfo.avatar" :size="50" />
-          <span style="font-size: 16px;">{{ isAuthenticated ? userStore.userInfo.name : '未登录' }}</span>
+        <div class="profile-container" @click="() => isAuthenticated ? onClickUserCenter() : onClickSignIn()">
+          <template v-if="isAuthenticated">
+            <UserAvatar class="avatar" :src="userStore.userInfo.avatar" :size="70" />
+            <span style="font-size: 18px;">{{ isAuthenticated ? userStore.userInfo.name : '未登录' }}</span>
+          </template>
+          <el-button v-else :icon="UserFilled" type="primary" :round="true" @click="onClickSignIn">登录</el-button>
         </div>
         <div v-if="isAuthenticated" class="item-list">
-          <div class="item" @click="() => router.push({ name: 'user', params: { id: userStore.userInfo.id } })">
+          <div class="item" @click="onClickUserCenter">
             <el-icon :size="18">
               <UserFilled />
             </el-icon>
@@ -152,7 +166,8 @@ function openUploadBox() {
           </div>
         </div>
         <div class="search-bar">
-          <SearchBar />
+          <el-input v-model="searchInput" placeholder="输入关键词" :prefix-icon="Search" @keyup.enter="onClickSearch"></el-input>
+          <el-button type="primary" @click="onClickSearch">搜索</el-button>
         </div>
       </div>
       <!-- <HistoryTable @cell-clicked="() => { drawerShow = false }" max-height="calc(100% - 50px)" class="mobile-table" line-clamp="1" /> -->
@@ -185,6 +200,8 @@ function openUploadBox() {
   .search-bar {
     margin-top: 20px;
     width: 100%;
+    display: flex;
+    gap: 5px;
   }
 }
 
@@ -245,7 +262,7 @@ function openUploadBox() {
   margin-top: 15px;
 }
 
-@media screen and (max-width: $MIN_MOBILE_WIDTH) {
+@media screen and (max-width: $MAX_MOBILE_WIDTH) {
   .desktop {
     display: none;
   }

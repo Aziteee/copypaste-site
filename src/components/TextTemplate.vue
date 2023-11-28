@@ -39,7 +39,8 @@ for (const item of splitedText) {
 <template>
   <div>
     <template v-for="(item, index) of textFragments" :key="index">
-    <el-text :tag="item.tag">{{ item.text }}</el-text>
+    <span v-if="item.tag === 'span'">{{ item.text }}</span>
+    <mark v-if="item.tag === 'mark'">{{ item.text }}</mark>
   </template>
   </div>
 </template>

@@ -16,14 +16,20 @@ const props = withDefaults(defineProps<{
   <div class="container">
     <h2 v-if="props.title" class="title">{{ props.title }}</h2>
     <div class="cards">
-      <article-card v-for="item in props.data" :key="item.text" :text="item.text" :line-clamp="props.lineClamp"
-        @click="$emit('article-selected', item.id)" :id="item.id" :likes="props.showLikes ? item.likes : undefined" />
+      <transition-group name="list">
+        <ArticleCard v-for="item in props.data" :key="item.id" :text="item.text" :line-clamp="props.lineClamp"
+                      @click="$emit('article-selected', item.id, $event)" :id="item.id" :likes="props.showLikes ? item.likes : undefined">
+          <template #operation>
+            <slot name="operation" :id="item.id"></slot>
+          </template>
+        </ArticleCard>
+      </transition-group>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-
+@import '@style/mixins.scss';
 .container {
   margin: 10px 10px;
   display: flex;
