@@ -30,7 +30,7 @@ const status = ref(0)
             @mouseout="status === 2 || (status = 0)"
             @blur="status = 0; $emit('textChanged')"
             @mousedown="status = 2"
-            @keyup.enter="status = 0; $emit('textChanged')" />
+            @keyup.enter="status = 0; $event.target.blur()" />
 </template>
 
 <style scoped lang="scss">
