@@ -53,11 +53,13 @@ export interface IUserInfo {
   id: string
   name: string
   avatar: string
+  sign: string
 }
 
 export interface IAPIPatchUserProfile {
   name?: string,
   avatar?: string
+  sign?: string
 }
 
 export interface IComment {

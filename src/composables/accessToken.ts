@@ -5,7 +5,8 @@ export function useAccessToken(getAccessToken: (resource?: string) => Promise<st
   const accessToken = ref('')
   const expired = ref(false)
 
-  getAccessToken(consts.resource)
+  if (getAccessToken) {
+    getAccessToken(consts.resource)
     .then((value) => {
       if (value !== undefined) {
         accessToken.value = value
@@ -14,6 +15,7 @@ export function useAccessToken(getAccessToken: (resource?: string) => Promise<st
         expired.value = true
       }
     })
+  }
 
   return { accessToken, expired }
 }

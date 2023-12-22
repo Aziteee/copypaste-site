@@ -3,7 +3,7 @@ import UserAvatar from '@/components/UserAvatar.vue'
 import Like from '@/assets/icons/Like.vue'
 import { Upload, Tickets, Delete } from '@element-plus/icons-vue'
 import ArticleList from '@/components/ArticleList.vue'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useLogto } from '@logto/vue'
@@ -14,6 +14,7 @@ import { useTitle } from '@vueuse/core'
 import { useAccessToken } from '@/composables/accessToken'
 import BannerCard from '@/components/BannerCard.vue'
 import { useSettingsStore } from '@/stores/settings'
+import EditableText from '@/components/EditableText.vue'
 
 const settingsStore = useSettingsStore()
 
@@ -33,6 +34,7 @@ const userProfile = reactive<IUserInfo & { likesNum: number, uploadsNum: number 
   id: route.params.id as string,
   name: '',
   avatar: '',
+  sign: '',
   likesNum: 0,
   uploadsNum: 0
 })
@@ -40,6 +42,8 @@ const userUploads = reactive<IArticle[]>([])
 const userLikes = reactive<IArticle[]>([])
 const isMe = computed(() => userProfile.id === userStore.userInfo.id && isAuthenticated.value)
 const selectedTab = ref(0)
+
+// const sign = ref(userProfile.sign)
 
 /**
  * 语句页面是否显示'加载更多'按钮
@@ -69,6 +73,7 @@ async function fetchUserData() {
     const result = response.data
     userProfile.name = result.name
     userProfile.avatar = result.avatar
+    userProfile.sign = result.sign
     userProfile.likesNum = result.likesNum
     userProfile.uploadsNum = result.uploadsNum
     loadingProfile.value = false
@@ -140,6 +145,12 @@ function handleSelect(id: string, event: any) {
   }
 }
 
+function changeSign() {
+  api.patchUserProfile(userProfile.id, { sign: userProfile.sign }, accessToken.value).then((response) => {
+    userStore.userInfo.sign = userProfile.sign
+  })
+}
+
 function openEditNameBox() {
   if (isMe.value) {
     ElMessageBox.prompt('请输入您的新名称', '修改名称', {
@@ -147,8 +158,8 @@ function openEditNameBox() {
       cancelButtonText: '取消'
     })
       .then(async ({ value }) => {
-        if (value.length > 12) {
-          ElMessage.error('名称不得超过12字')
+        if (value.length > 10) {
+          ElMessage.error('名称不得超过10字')
         } else {
           api.patchUserProfile(userProfile.id, { name: value }, accessToken.value).then((response) => {
             userStore.userInfo.name = value
@@ -220,6 +231,9 @@ async function onClickDeleteArticle(id: string) {
                   <span style="margin-left: 3px;">{{ userProfile.uploadsNum }}</span>
                 </div>
               </div>
+              <div class="sign-container">
+                <EditableText v-model="userProfile.sign" @text-changed="changeSign" placeholder="编辑个性签名..." />
+              </div>
             </div>
           </div>
         </template>
@@ -283,10 +297,14 @@ async function onClickDeleteArticle(id: string) {
 .info-container {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+
+  .sign-container {
+    margin-left: 5px;
+  }
 
   .social-info-container {
     display: flex;
-    margin-top: 5px;
     margin-left: 15px;
 
     .number-container {
@@ -298,7 +316,7 @@ async function onClickDeleteArticle(id: string) {
   .name-editor-container {
     display: flex;
     align-items: center;
-    height: 40px;
+    height: 35px;
 
     & span {
       margin: 15px;

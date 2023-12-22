@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     ArticleList: typeof import('./src/components/ArticleList.vue')['default']
     ArticleTable: typeof import('./src/components/ArticleTable.vue')['default']
     BannerCard: typeof import('./src/components/BannerCard.vue')['default']
+    EditableText: typeof import('./src/components/EditableText.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']

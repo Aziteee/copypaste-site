@@ -4,6 +4,7 @@ import { useLogto } from '@logto/vue'
 import { useAccessToken } from '@/composables/accessToken'
 import * as consts from '@/consts'
 import { ElMessage } from 'element-plus'
+import { watch } from 'vue'
 
 // import { ElNotification } from 'element-plus'
 // import { onMounted } from 'vue'
@@ -24,18 +25,23 @@ import { ElMessage } from 'element-plus'
 // })
 
 const { isAuthenticated, getAccessToken, signOut } = useLogto()
-setTimeout(() => {
-  if (isAuthenticated.value) {
+const unwatchIsAuthenticated = watch(isAuthenticated, () => {
+  if (isAuthenticated.value === true) {
     const { expired } = useAccessToken(getAccessToken)
-    if (expired.value) {
-      console.warn('TOKEN EXPIRED')
-      ElMessage('登录信息过期，请重新登录')
-      setTimeout(() => {
-        signOut(consts.baseUrl)
-      }, 1000)
-    }
+
+    watch(expired, () => {
+      if (expired.value) {
+        console.warn('TOKEN EXPIRED')
+        ElMessage('登录信息过期，请重新登录')
+        setTimeout(() => {
+          signOut(consts.baseUrl)
+        }, 1500)
+      }
+    })
+
+    unwatchIsAuthenticated()
   }
-}, 1000)
+})
 
 </script>
 
