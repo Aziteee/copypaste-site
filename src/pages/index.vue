@@ -108,7 +108,7 @@ fetchLikesRanking()
                 <el-icon>
                   <Like />
                 </el-icon>
-                <span style="margin-left: 10px">{{ scope.row.likes }}</span>
+                <span style="margin-left: 5px">{{ scope.row.likes }}</span>
               </div>
             </template>
           </el-table-column>
