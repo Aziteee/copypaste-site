@@ -211,7 +211,7 @@ async function onClickDeleteArticle(id: string) {
         <template #default>
           <div class="basic-info-container">
             <div class="avatar-container">
-              <UserAvatar :size="70" :src="userProfile.avatar" :hover-shadow="isMe" @click="openEditAvatarBox" />
+              <UserAvatar :size="75" :src="userProfile.avatar" :hover-shadow="isMe" @click="openEditAvatarBox" />
             </div>
             <div class="info-container">
               <div class="name-editor-container" :class="{ 'show-dashed-border': isMe }" @click="openEditNameBox">
@@ -272,6 +272,8 @@ async function onClickDeleteArticle(id: string) {
 </template>
 
 <style scoped lang="scss">
+@import '@style/constants.scss';
+
 .articles-list-container {
   display: flex;
   flex-direction: column;
@@ -294,18 +296,21 @@ async function onClickDeleteArticle(id: string) {
   }
 }
 
+.avatar-container {
+  margin-top: 5px;
+
+  @media screen and (max-width: $MAX_MOBILE_WIDTH) {
+    margin-top: 0px;
+  }
+}
+
 .info-container {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-
-  .sign-container {
-    margin-left: 5px;
-  }
+  gap: 3px;
 
   .social-info-container {
     display: flex;
-    margin-left: 15px;
 
     .number-container {
       display: flex;
@@ -313,13 +318,37 @@ async function onClickDeleteArticle(id: string) {
     }
   }
 
-  .name-editor-container {
-    display: flex;
-    align-items: center;
-    height: 35px;
+  &:deep(.el-input__inner) {
+    font-size: small;
+  }
 
-    & span {
-      margin: 15px;
+  @media screen {
+    @media (min-width: $MAX_MOBILE_WIDTH) {
+      .sign-container {
+        margin-left: 5px;
+      }
+
+      .social-info-container {
+        margin-left: 15px;
+      }
+
+      .name-editor-container {
+        display: flex;
+        align-items: center;
+        height: 35px;
+
+        & span {
+          margin: 15px;
+        }
+      }
+    }
+
+    @media (max-width: $MAX_MOBILE_WIDTH) {
+      align-items: center;
+
+      &:deep(.el-input__inner) {
+        text-align: center;
+      }
     }
   }
 
@@ -336,6 +365,11 @@ async function onClickDeleteArticle(id: string) {
 .basic-info-container {
   display: flex;
   margin: 0px 20px;
+
+  @media screen and (max-width: $MAX_MOBILE_WIDTH) {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .container {

@@ -24,6 +24,9 @@ import { watch } from 'vue'
 //   }
 // })
 
+/**
+ * 检测token是否过期
+ */
 const { isAuthenticated, getAccessToken, signOut } = useLogto()
 const unwatchIsAuthenticated = watch(isAuthenticated, () => {
   if (isAuthenticated.value === true) {
