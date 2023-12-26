@@ -232,7 +232,7 @@ async function onClickDeleteArticle(id: string) {
                 </div>
               </div>
               <div class="sign-container">
-                <EditableText v-model="userProfile.sign" @text-changed="changeSign" placeholder="编辑个性签名..." />
+                <EditableText v-model="userProfile.sign" @text-changed="changeSign" placeholder="编辑个性签名..." :editable="isMe" text-size="small" />
               </div>
             </div>
           </div>
@@ -316,10 +316,6 @@ async function onClickDeleteArticle(id: string) {
       display: flex;
       align-items: center;
     }
-  }
-
-  &:deep(.el-input__inner) {
-    font-size: small;
   }
 
   @media screen {

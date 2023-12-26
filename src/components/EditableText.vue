@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 
-const props = defineProps(['modelValue', 'placeholder'])
+const props = withDefaults(defineProps<{
+  modelValue: string
+  placeholder?: string
+  editable?: boolean
+  textSize?: string
+}>(), {
+  placeholder: '',
+  editable: true
+})
 const emit = defineEmits(['update:modelValue', 'textChanged'])
 
 const value = computed({
@@ -13,14 +21,18 @@ const value = computed({
   }
 })
 
+const { textSize } = toRefs(props)
 const status = ref(0)
 </script>
 
 <template>
+  <el-text v-if="!props.editable" :class="{ 'custom-text-size': textSize }" style="margin-left: 10px;">{{ props.modelValue }}</el-text>
   <el-input
+            v-else
             :class="{
               input__default: status === 0,
-              input__hover: status === 1
+              input__hover: status === 1,
+              'custom-text-size': textSize
             }"
             type="text"
             :placeholder="props.placeholder"
@@ -44,5 +56,13 @@ const status = ref(0)
 
 .input__hover {
   box-shadow: none;
+}
+
+.custom-text-size {
+  font-size: v-bind(textSize);
+
+  &:deep(.el-input__inner) {
+    font-size: v-bind(textSize);
+  }
 }
 </style>
