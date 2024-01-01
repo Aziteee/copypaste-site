@@ -49,6 +49,7 @@ function openUploadBox() {
         type: 'textarea',
         placeholder: '请输入文本',
         maxlength: 1000,
+        autosize: { minRows: 3, maxRows: 10 },
         showWordLimit: true,
         modelValue: inputText.value,
         'onUpdate:modelValue': (val: string) => {

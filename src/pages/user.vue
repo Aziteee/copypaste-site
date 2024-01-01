@@ -73,7 +73,7 @@ async function fetchUserData() {
     const result = response.data
     userProfile.name = result.name
     userProfile.avatar = result.avatar
-    userProfile.sign = result.sign
+    userProfile.sign = result.sign || (isMe.value ? '' : '这个人很懒，什么都没有留下...')
     userProfile.likesNum = result.likesNum
     userProfile.uploadsNum = result.uploadsNum
     loadingProfile.value = false
