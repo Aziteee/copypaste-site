@@ -47,6 +47,10 @@ $CARD-SHADOW:
 $BUTTON-SHADOW: 0 10px 15px -10px var(--el-color-primary);
 $SHADOW-LIGHTEST: rgba(0, 0, 0, 0.04) 0px 4px 6px;
 
+body {  
+  scrollbar-gutter: stable both-edges;// 防止出现滚动条时页面抖动
+}
+
 html,
 body,
 #app {

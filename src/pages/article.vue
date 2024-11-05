@@ -15,6 +15,7 @@ import { useLogto } from '@logto/vue'
 import { useAccessToken } from '@/composables/accessToken'
 import ArticleComments from '@/components/ArticleComments.vue'
 import { useUserStore } from '@/stores/user'
+import LikeButton from '@components/LikeButton.vue'
 
 /**
  * 评论每页显示个数
@@ -256,8 +257,9 @@ const createComment = () => {
         </div>
         <el-text size="large" tag="p" style="line-height: 30px; white-space: pre-wrap;" class="article-text">{{ data.text }}</el-text>
         <div class="button-group">
-          <el-button v-if="isLiked === isLikedStatus.LIKED" style="font-size: large;" :icon="Like" :circle="true" type="danger" size="large" @click="unlike"></el-button>
-          <el-button v-else :icon="Like" style="font-size: large;" :circle="true" type="primary" size="large" @click="like"></el-button>
+          <!-- <el-button v-if="isLiked === isLikedStatus.LIKED" style="font-size: large;" :icon="Like" :circle="true" type="danger" size="large" @click="unlike"></el-button> -->
+          <!-- <el-button v-else :icon="Like" style="font-size: large;" :circle="true" type="primary" size="large" @click="like"></el-button> -->
+          <LikeButton :is-liked="isLiked" @click="() => { if (isLiked === isLikedStatus.LIKED) { unlike() } else if (isLiked === isLikedStatus.UNLIKED) like() }" />
           <el-button :icon="Copy" :circle="true" type="primary" size="large" style="font-size: large;" @click="copy"></el-button>
         </div>
       </div>
@@ -329,7 +331,11 @@ const createComment = () => {
   }
 
   .content-card {
-    min-width: 330px;
+    min-width: 400px;
+
+    @media screen and (max-width: $MAX_MOBILE_WIDTH) {
+      min-width: 330px;
+    }
 
     &:deep(.el-card__header) span {
       font-size: medium;

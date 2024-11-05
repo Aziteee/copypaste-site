@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UserAvatar from '@/components/UserAvatar.vue'
 import Like from '@/assets/icons/Like.vue'
-import { Upload, Tickets, Delete } from '@element-plus/icons-vue'
+import { Upload, Tickets, MoreFilled } from '@element-plus/icons-vue'
 import ArticleList from '@/components/ArticleList.vue'
 import { computed, reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
@@ -188,7 +188,7 @@ function openEditAvatarBox() {
   }
 }
 
-async function onClickDeleteArticle(id: string) {
+function deleteArticle(id: string) {
   api.deleteArticle(id, accessToken.value)
     .then((response) => {
       if (response.status === 201) {
@@ -200,6 +200,31 @@ async function onClickDeleteArticle(id: string) {
         }
       }
     })
+}
+
+// eslint-disable-next-line no-unused-vars
+enum moreClickCommands {
+  // eslint-disable-next-line no-unused-vars
+  PIN,
+  // eslint-disable-next-line no-unused-vars
+  DELETE
+}
+
+function handleMoreClick(command: moreClickCommands, id: string) {
+  if (command === moreClickCommands.DELETE) {
+    if (isMe.value) {
+      ElMessageBox.confirm(
+        '确认删除此语句？',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).then(() => {
+        deleteArticle(id)
+      })
+    }
+  }
 }
 </script>
 
@@ -249,13 +274,17 @@ async function onClickDeleteArticle(id: string) {
       <template v-else>
         <ArticleList class="articles-list" @article-selected="handleSelect" :data="selectedTab === 0 ? userUploads : userLikes" :show-likes="true" :line-clamp="3">
           <template #operation="slotProps">
-            <el-popconfirm v-if="isMe && selectedTab === 0" title="确认删除?" @confirm="onClickDeleteArticle(slotProps.id)">
-              <template #reference>
-                <el-icon size="small" style="cursor: pointer;">
-                  <Delete />
-                </el-icon>
+            <el-dropdown trigger="click" @command="($event: moreClickCommands) => { handleMoreClick($event, slotProps.id) }">
+              <el-icon size="small" style="cursor: pointer;" color="gray">
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item :command="moreClickCommands.PIN">置顶</el-dropdown-item>
+                  <el-dropdown-item :command="moreClickCommands.DELETE">删除</el-dropdown-item>
+                </el-dropdown-menu>
               </template>
-            </el-popconfirm>
+            </el-dropdown>
           </template>
         </ArticleList>
         <el-button
